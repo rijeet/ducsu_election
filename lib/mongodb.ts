@@ -1,8 +1,9 @@
 import { MongoClient, MongoClientOptions } from 'mongodb';
+import mongoose from 'mongoose';
 
 const uri = process.env.MONGODB_URI;
 const options: MongoClientOptions = {
-  appName: "devrel.nextjs.starter",
+  appName: "ducsu-election",
 };
 
 let client: MongoClient;
@@ -25,6 +26,27 @@ if (uri) {
     // In production mode, it's best to not use a global variable.
     client = new MongoClient(uri, options);
     clientPromise = client.connect();
+  }
+}
+
+// Mongoose connection function
+export async function dbConnect() {
+  if (mongoose.connections[0].readyState) {
+    return;
+  }
+  
+  if (!uri) {
+    throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
+  }
+  
+  try {
+    await mongoose.connect(uri, {
+      dbName: 'ducsu_election'
+    });
+    console.log('Connected to MongoDB');
+  } catch (error) {
+    console.error('Error connecting to MongoDB:', error);
+    throw error;
   }
 }
 
