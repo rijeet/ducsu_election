@@ -28,7 +28,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "postinstall": "npm uninstall @next/swc-win32-x64-msvc @next/swc-win32-arm64-msvc --no-save || true"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.2",
