@@ -2,9 +2,19 @@ import { dbConnect } from "@/lib/mongodb";
 import Candidate from "@/models/Candidate";
 
 export async function GET() {
-  await dbConnect();
-  
   try {
+    await dbConnect();
+    
+    // If no database connection, return empty data
+    if (!process.env.MONGODB_URI) {
+      return Response.json({ 
+        success: true, 
+        data: [],
+        totalPositions: 0,
+        totalCandidates: 0
+      });
+    }
+
     // Get all candidates grouped by position
     const candidatesByPosition = await Candidate.aggregate([
       {

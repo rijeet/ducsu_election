@@ -36,7 +36,8 @@ export async function dbConnect() {
   }
   
   if (!uri) {
-    throw new Error('Please define the MONGODB_URI environment variable inside .env.local');
+    console.warn('MONGODB_URI not defined, skipping database connection');
+    return;
   }
   
   try {

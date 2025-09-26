@@ -3,9 +3,17 @@ import Candidate from "@/models/Candidate";
 import { PYRAMID_LAYERS } from "@/lib/positions";
 
 export async function GET() {
-  await dbConnect();
-
   try {
+    await dbConnect();
+    
+    // If no database connection, return empty data
+    if (!process.env.MONGODB_URI) {
+      return Response.json({
+        success: true,
+        data: [],
+      });
+    }
+
     const winnerPositions: any[] = [];
 
     const allPositions = PYRAMID_LAYERS.flat();
